@@ -5,604 +5,81 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ReadEasy — Free Reading Tool for Every Mind</title>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --green: #2d6a4f;
-  --green-light: #52b788;
-  --green-pale: #d8f3dc;
-  --cream: #fdf8f0;
-  --orange: #f4a261;
-  --red: #e76f51;
-  --navy: #1a1a2e;
-  --gray: #6b7280;
-  --white: #ffffff;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #fdf8f0; font-family: 'Atkinson Hyperlegible', sans-serif; color: #1a1a2e; overflow-x: hidden; }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; background: #fdf8f0; border-bottom: 2px solid #2d6a4f; }
+.nav-logo { font-family: ‘Lexend’, sans-serif; font-weight: 800; font-size: 1.4rem; color: #2d6a4f; text-decoration: none; }
+.nav-cta { background: #2d6a4f; color: #ffffff; padding: 10px 22px; border-radius: 8px; font-family: ‘Lexend’, sans-serif; font-weight: 700; font-size: 0.9rem; text-decoration: none; border: 2px solid #2d6a4f; }
+
+.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 120px 24px 80px; text-align: center; background: #fdf8f0; }
+.hero-badge { display: inline-block; background: #d8f3dc; color: #1b4332; padding: 8px 18px; border-radius: 30px; font-size: 0.82rem; font-weight: 700; font-family: ‘Lexend’, sans-serif; margin-bottom: 32px; border: 2px solid #2d6a4f; }
+.hero-title { font-family: ‘Lexend’, sans-serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 800; line-height: 1; color: #1a1a2e; margin-bottom: 20px; letter-spacing: -0.02em; }
+.hero-title .accent { color: #2d6a4f; text-decoration: underline; text-decoration-color: #f4a261; text-underline-offset: 6px; text-decoration-thickness: 4px; }
+.hero-sub { font-size: clamp(1rem, 2.5vw, 1.3rem); color: #333333; max-width: 600px; line-height: 1.7; margin-bottom: 48px; }
+.hero-sub strong { color: #1a1a2e; font-weight: 700; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
+.btn-big { background: #2d6a4f; color: #ffffff; padding: 16px 36px; border-radius: 10px; font-family: ‘Lexend’, sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; border: 2px solid #2d6a4f; display: inline-block; }
+.btn-ghost { background: #fdf8f0; color: #2d6a4f; padding: 16px 36px; border-radius: 10px; font-family: ‘Lexend’, sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; border: 2px solid #2d6a4f; display: inline-block; }
+.feature-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 680px; }
+.pill { background: #ffffff; border: 2px solid #2d6a4f; color: #1a1a2e; padding: 7px 14px; border-radius: 30px; font-size: 0.82rem; font-weight: 600; }
+
+.story { background: #d8f3dc; padding: 100px 24px; }
+.story-inner { max-width: 760px; margin: 0 auto; }
+.section-label { font-family: ‘Lexend’, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #1b4332; margin-bottom: 24px; }
+.story-quote { font-family: ‘Lexend’, sans-serif; font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 800; color: #1a1a2e; line-height: 1.3; margin-bottom: 36px; border-left: 6px solid #2d6a4f; padding-left: 24px; }
+.story-quote .hl { color: #1b4332; }
+.story-body { font-size: 1.05rem; color: #1a1a2e; line-height: 1.8; margin-bottom: 20px; }
+.story-body strong { color: #1b4332; font-weight: 700; }
+.story-sig { margin-top: 40px; padding-top: 28px; border-top: 2px solid #2d6a4f; display: flex; align-items: center; gap: 14px; }
+.sig-avatar { width: 46px; height: 46px; background: #2d6a4f; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: ‘Lexend’, sans-serif; font-weight: 800; font-size: 1.1rem; color: #ffffff; flex-shrink: 0; }
+.sig-text { font-size: 0.88rem; color: #333333; line-height: 1.5; }
+.sig-text strong { color: #1a1a2e; display: block; font-size: 0.95rem; }
+
+.features { background: #fdf8f0; padding: 100px 24px; }
+.section-title { font-family: ‘Lexend’, sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; text-align: center; color: #1a1a2e; margin-bottom: 12px; }
+.section-sub { text-align: center; color: #444444; font-size: 1rem; max-width: 500px; margin: 0 auto 52px; line-height: 1.7; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+.feat-card { background: #ffffff; border-radius: 16px; padding: 28px 24px; border: 2px solid #d4c9b8; }
+.feat-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+.feat-name { font-family: ‘Lexend’, sans-serif; font-weight: 700; font-size: 1rem; color: #1a1a2e; margin-bottom: 8px; }
+.feat-desc { font-size: 0.88rem; color: #444444; line-height: 1.6; }
+
+.belief { background: #d8f3dc; padding: 100px 24px; }
+.belief-inner { max-width: 900px; margin: 0 auto; }
+.belief-body { text-align: center; color: #1a1a2e; font-size: 1rem; max-width: 600px; margin: 0 auto 52px; line-height: 1.8; }
+.belief-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.belief-card { background: #ffffff; border-radius: 14px; padding: 26px 22px; text-align: center; border: 2px solid #2d6a4f; }
+.belief-emoji { font-size: 2.2rem; display: block; margin-bottom: 12px; }
+.belief-title { font-family: ‘Lexend’, sans-serif; font-weight: 700; font-size: 0.95rem; color: #1a1a2e; margin-bottom: 6px; }
+.belief-desc { font-size: 0.82rem; color: #444444; line-height: 1.5; }
+
+.collab { background: #fdf8f0; padding: 100px 24px; }
+.collab-inner { max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 24px; padding: 52px 44px; border: 2px solid #2d6a4f; text-align: center; }
+.collab-icon { font-size: 3rem; display: block; margin-bottom: 20px; }
+.collab-title { font-family: ‘Lexend’, sans-serif; font-size: clamp(1.6rem, 3vw, 2rem); font-weight: 800; color: #1a1a2e; margin-bottom: 16px; }
+.collab-body { color: #333333; font-size: 1rem; line-height: 1.75; margin-bottom: 32px; }
+.collab-body strong { color: #1a1a2e; font-weight: 700; }
+.need-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; text-align: left; }
+.need-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; background: #d8f3dc; border-radius: 10px; border: 1.5px solid #2d6a4f; }
+.need-icon { font-size: 1.2rem; flex-shrink: 0; }
+.need-text { font-size: 0.9rem; color: #1a1a2e; line-height: 1.5; }
+.need-text strong { font-family: ‘Lexend’, sans-serif; display: block; margin-bottom: 2px; color: #1b4332; }
+.contact-btn { display: inline-flex; align-items: center; gap: 10px; background: #2d6a4f; color: #ffffff; padding: 15px 32px; border-radius: 10px; font-family: ‘Lexend’, sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; border: 2px solid #2d6a4f; }
+
+footer { background: #1b4332; padding: 52px 24px 36px; text-align: center; }
+.footer-logo { font-family: ‘Lexend’, sans-serif; font-weight: 800; font-size: 1.5rem; color: #ffffff; margin-bottom: 10px; }
+.footer-tagline { color: #d8f3dc; font-size: 0.88rem; margin-bottom: 28px; }
+.footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+.footer-links a { color: #d8f3dc; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+.footer-bottom { color: #a7c4b0; font-size: 0.78rem; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; background: #fdf8f0; }
-
-body {
-background: #fdf8f0;
-font-family: ‘Atkinson Hyperlegible’, sans-serif;
-color: #1a1a2e;
-overflow-x: hidden;
-}
-
-/* ── NAV ── */
-nav {
-position: fixed;
-top: 0; left: 0; right: 0;
-z-index: 100;
-padding: 18px 40px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-background: rgba(253,248,240,0.85);
-backdrop-filter: blur(12px);
-border-bottom: 1px solid rgba(212,201,184,0.4);
-}
-
-.nav-logo {
-font-family: ‘Lexend’, sans-serif;
-font-weight: 800;
-font-size: 1.4rem;
-color: var(–green);
-display: flex;
-align-items: center;
-gap: 10px;
-text-decoration: none;
-}
-
-.nav-logo .dot {
-width: 10px; height: 10px;
-background: var(–orange);
-border-radius: 50%;
-animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-0%, 100% { transform: scale(1); opacity: 1; }
-50% { transform: scale(1.4); opacity: 0.7; }
-}
-
-.nav-cta {
-background: var(–green);
-color: white;
-padding: 10px 22px;
-border-radius: 30px;
-font-family: ‘Lexend’, sans-serif;
-font-weight: 600;
-font-size: 0.88rem;
-text-decoration: none;
-transition: all 0.2s;
-box-shadow: 0 4px 14px rgba(45,106,79,0.3);
-}
-
-.nav-cta:hover {
-background: #1b4332;
-transform: translateY(-1px);
-box-shadow: 0 6px 20px rgba(45,106,79,0.4);
-}
-
-/* ── HERO ── */
-.hero {
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 120px 24px 80px;
-text-align: center;
-position: relative;
-z-index: 1;
-}
-
-.hero-badge {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: var(–green-pale);
-color: var(–green);
-padding: 8px 18px;
-border-radius: 30px;
-font-size: 0.82rem;
-font-weight: 600;
-font-family: ‘Lexend’, sans-serif;
-letter-spacing: 0.04em;
-margin-bottom: 32px;
-animation: fadeUp 0.6s ease both;
-border: 1.5px solid rgba(82,183,136,0.3);
-}
-
-.hero-title {
-font-family: ‘Lexend’, sans-serif;
-font-size: clamp(3rem, 8vw, 6.5rem);
-font-weight: 800;
-line-height: 1;
-color: var(–navy);
-margin-bottom: 12px;
-animation: fadeUp 0.6s ease 0.1s both;
-letter-spacing: -0.02em;
-}
-
-.hero-title .accent {
-color: var(–green);
-position: relative;
-display: inline-block;
-}
-
-.hero-title .accent::after {
-content: ‘’;
-position: absolute;
-bottom: 4px; left: 0; right: 0;
-height: 6px;
-background: var(–orange);
-border-radius: 3px;
-opacity: 0.6;
-z-index: -1;
-}
-
-.hero-sub {
-font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-color: var(–gray);
-max-width: 640px;
-line-height: 1.6;
-margin-bottom: 48px;
-animation: fadeUp 0.6s ease 0.2s both;
-}
-
-.hero-sub strong { color: var(–navy); font-weight: 700; }
-
-.hero-btns {
-display: flex;
-gap: 14px;
-flex-wrap: wrap;
-justify-content: center;
-animation: fadeUp 0.6s ease 0.3s both;
-margin-bottom: 64px;
-}
-
-.btn-big {
-background: var(–green);
-color: white;
-padding: 16px 36px;
-border-radius: 14px;
-font-family: ‘Lexend’, sans-serif;
-font-weight: 700;
-font-size: 1.05rem;
-text-decoration: none;
-transition: all 0.2s;
-box-shadow: 0 6px 24px rgba(45,106,79,0.35);
-display: flex;
-align-items: center;
-gap: 10px;
-}
-
-.btn-big:hover {
-background: #1b4332;
-transform: translateY(-2px);
-box-shadow: 0 10px 32px rgba(45,106,79,0.45);
-}
-
-.btn-ghost {
-background: transparent;
-color: var(–navy);
-padding: 16px 36px;
-border-radius: 14px;
-font-family: ‘Lexend’, sans-serif;
-font-weight: 600;
-font-size: 1.05rem;
-text-decoration: none;
-border: 2px solid rgba(26,26,46,0.2);
-transition: all 0.2s;
-}
-
-.btn-ghost:hover {
-border-color: var(–green);
-color: var(–green);
-background: var(–green-pale);
-}
-
-/* ── FEATURE PILLS ── */
-.feature-pills {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-justify-content: center;
-max-width: 700px;
-animation: fadeUp 0.6s ease 0.4s both;
-}
-
-.pill {
-background: white;
-border: 1.5px solid rgba(212,201,184,0.6);
-padding: 8px 16px;
-border-radius: 30px;
-font-size: 0.82rem;
-color: var(–navy);
-display: flex;
-align-items: center;
-gap: 6px;
-box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-transition: all 0.2s;
-}
-
-.pill:hover {
-border-color: var(–green-light);
-box-shadow: 0 4px 14px rgba(82,183,136,0.2);
-transform: translateY(-1px);
-}
-
-/* ── ORIGIN STORY ── */
-.origin {
-padding: 100px 24px;
-position: relative;
-z-index: 1;
-background: #1b4332;
-overflow: hidden;
-}
-
-.origin-inner {
-max-width: 760px;
-margin: 0 auto;
-position: relative;
-z-index: 2;
-}
-
-.origin-label {
-font-family: ‘Lexend’, sans-serif;
-font-size: 0.72rem;
-font-weight: 700;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: #52b788;
-margin-bottom: 24px;
-}
-
-.origin-quote {
-font-family: ‘Lexend’, sans-serif;
-font-size: clamp(1.6rem, 4vw, 2.8rem);
-font-weight: 700;
-color: #ffffff;
-line-height: 1.25;
-margin-bottom: 36px;
-letter-spacing: -0.01em;
-}
-
-.origin-quote .hl { color: #f4a261; }
-
-.origin-body {
-font-size: 1.05rem;
-color: #d8f3dc;
-line-height: 1.8;
-margin-bottom: 20px;
-}
-
-.origin-body strong { color: #ffffff; }
-
-.origin-sig {
-margin-top: 40px;
-padding-top: 28px;
-border-top: 1px solid rgba(255,255,255,0.2);
-display: flex;
-align-items: center;
-gap: 14px;
-}
-
-.sig-avatar {
-width: 46px; height: 46px;
-background: #f4a261;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-font-family: ‘Lexend’, sans-serif;
-font-weight: 800;
-font-size: 1.1rem;
-color: white;
-flex-shrink: 0;
-}
-
-.sig-text { font-size: 0.88rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
-.sig-text strong { color: white; display: block; font-size: 0.95rem; }
-color: white;
-flex-shrink: 0;
-}
-
-.sig-text { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
-.sig-text strong { color: white; display: block; font-size: 0.95rem; }
-
-/* ── FEATURES GRID ── */
-.features {
-padding: 100px 24px;
-position: relative;
-z-index: 1;
-}
-
-.section-label {
-font-family: ‘Lexend’, sans-serif;
-font-size: 0.72rem;
-font-weight: 700;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: var(–green);
-text-align: center;
-margin-bottom: 16px;
-}
-
-.section-title {
-font-family: ‘Lexend’, sans-serif;
-font-size: clamp(2rem, 4vw, 3rem);
-font-weight: 800;
-text-align: center;
-color: var(–navy);
-margin-bottom: 16px;
-letter-spacing: -0.02em;
-}
-
-.section-sub {
-text-align: center;
-color: var(–gray);
-font-size: 1.05rem;
-max-width: 520px;
-margin: 0 auto 60px;
-line-height: 1.7;
-}
-
-.features-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 20px;
-max-width: 1000px;
-margin: 0 auto;
-}
-
-.feat-card {
-background: white;
-border-radius: 20px;
-padding: 32px 28px;
-border: 1.5px solid rgba(212,201,184,0.5);
-box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-transition: all 0.25s;
-position: relative;
-overflow: hidden;
-}
-
-.feat-card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 3px;
-background: linear-gradient(90deg, var(–green), var(–green-light));
-opacity: 0;
-transition: opacity 0.25s;
-}
-
-.feat-card:hover {
-transform: translateY(-4px);
-box-shadow: 0 12px 36px rgba(0,0,0,0.1);
-border-color: var(–green-light);
-}
-
-.feat-card:hover::before { opacity: 1; }
-
-.feat-icon {
-font-size: 2.2rem;
-margin-bottom: 16px;
-display: block;
-}
-
-.feat-name {
-font-family: ‘Lexend’, sans-serif;
-font-weight: 700;
-font-size: 1.05rem;
-color: var(–navy);
-margin-bottom: 8px;
-}
-
-.feat-desc {
-font-size: 0.9rem;
-color: var(–gray);
-line-height: 1.6;
-}
-
-/* ── FOR WHO ── */
-.forwho {
-background: var(–green-pale);
-padding: 100px 24px;
-position: relative;
-z-index: 1;
-}
-
-.forwho-inner {
-max-width: 900px;
-margin: 0 auto;
-}
-
-.forwho-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-gap: 16px;
-margin-top: 60px;
-}
-
-.who-card {
-background: white;
-border-radius: 16px;
-padding: 28px 24px;
-text-align: center;
-box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-transition: transform 0.2s;
-}
-
-.who-card:hover { transform: translateY(-3px); }
-
-.who-emoji { font-size: 2.5rem; display: block; margin-bottom: 12px; }
-
-.who-title {
-font-family: ‘Lexend’, sans-serif;
-font-weight: 700;
-font-size: 0.95rem;
-color: var(–navy);
-margin-bottom: 6px;
-}
-
-.who-desc { font-size: 0.82rem; color: var(–gray); line-height: 1.5; }
-
-/* ── COLLABORATE ── */
-.collab {
-padding: 100px 24px;
-position: relative;
-z-index: 1;
-}
-
-.collab-inner {
-max-width: 720px;
-margin: 0 auto;
-background: white;
-border-radius: 28px;
-padding: 60px 52px;
-border: 1.5px solid rgba(212,201,184,0.5);
-box-shadow: 0 8px 40px rgba(0,0,0,0.06);
-text-align: center;
-}
-
-.collab-icon { font-size: 3.5rem; margin-bottom: 24px; display: block; }
-
-.collab-title {
-font-family: ‘Lexend’, sans-serif;
-font-size: clamp(1.6rem, 3vw, 2.2rem);
-font-weight: 800;
-color: var(–navy);
-margin-bottom: 16px;
-letter-spacing: -0.01em;
-}
-
-.collab-body {
-color: var(–gray);
-font-size: 1rem;
-line-height: 1.75;
-margin-bottom: 36px;
-max-width: 520px;
-margin-left: auto;
-margin-right: auto;
-}
-
-.collab-body strong { color: var(–navy); }
-
-.collab-needs {
-display: flex;
-flex-direction: column;
-gap: 12px;
-margin-bottom: 40px;
-text-align: left;
-}
-
-.need-item {
-display: flex;
-align-items: flex-start;
-gap: 12px;
-padding: 14px 18px;
-background: var(–cream);
-border-radius: 12px;
-border: 1.5px solid rgba(212,201,184,0.4);
-}
-
-.need-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-.need-text { font-size: 0.9rem; color: var(–navy); line-height: 1.5; }
-.need-text strong { font-family: ‘Lexend’, sans-serif; display: block; margin-bottom: 2px; }
-
-.contact-btn {
-display: inline-flex;
-align-items: center;
-gap: 10px;
-background: var(–green);
-color: white;
-padding: 15px 32px;
-border-radius: 12px;
-font-family: ‘Lexend’, sans-serif;
-font-weight: 700;
-font-size: 1rem;
-text-decoration: none;
-transition: all 0.2s;
-box-shadow: 0 6px 20px rgba(45,106,79,0.3);
-}
-
-.contact-btn:hover {
-background: #1b4332;
-transform: translateY(-2px);
-}
-
-/* ── FOOTER ── */
-footer {
-background: #1b4332;
-padding: 60px 24px 40px;
-text-align: center;
-position: relative;
-z-index: 1;
-}
-
-.footer-logo {
-font-family: ‘Lexend’, sans-serif;
-font-weight: 800;
-font-size: 1.6rem;
-color: #ffffff;
-margin-bottom: 12px;
-}
-
-.footer-tagline {
-color: #d8f3dc;
-font-size: 0.88rem;
-margin-bottom: 32px;
-}
-
-.footer-links {
-display: flex;
-gap: 24px;
-justify-content: center;
-flex-wrap: wrap;
-margin-bottom: 40px;
-}
-
-.footer-links a {
-color: #d8f3dc;
-text-decoration: none;
-font-size: 0.85rem;
-transition: color 0.2s;
-}
-
-.footer-links a:hover { color: #f4a261; }
-
-.footer-bottom {
-color: rgba(255,255,255,0.6);
-font-size: 0.78rem;
-padding-top: 24px;
-border-top: 1px solid rgba(255,255,255,0.15);
-}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(20px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-.reveal {
-opacity: 0;
-transform: translateY(24px);
-transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.reveal.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-/* ── MOBILE ── */
 @media (max-width: 640px) {
 nav { padding: 14px 20px; }
-.collab-inner { padding: 36px 24px; }
+.collab-inner { padding: 32px 20px; }
 .hero-btns { flex-direction: column; align-items: center; }
 }
 </style>
@@ -611,34 +88,18 @@ nav { padding: 14px 20px; }
 <body>
 
 <nav>
-  <a href="#" class="nav-logo">
-    <div class="dot"></div>
-    ReadEasy
-  </a>
+  <a href="#" class="nav-logo">📖 ReadEasy</a>
   <a href="readeasy-app.html" class="nav-cta">Open the Tool →</a>
 </nav>
 
-<!-- ── HERO ── -->
-
 <section class="hero">
-  <div class="hero-badge">
-    <span>💚</span> Free · No signup · No ads · Forever
-  </div>
-
-  <h1 class="hero-title">
-    This is your<br><span class="accent">access.</span>
-  </h1>
-
-  <p class="hero-sub">
-    Reading should not be a privilege.<br>
-    <strong>ReadEasy is free. Open. For every mind. No explanation required.</strong>
-  </p>
-
+  <div class="hero-badge">💚 Free · No signup · No ads · Forever</div>
+  <h1 class="hero-title">This is your<br><span class="accent">access.</span></h1>
+  <p class="hero-sub">Reading should not be a privilege.<br><strong>ReadEasy is free. Open. For every mind. No explanation required.</strong></p>
   <div class="hero-btns">
     <a href="readeasy-app.html" class="btn-big">📖 Open ReadEasy</a>
     <a href="#story" class="btn-ghost">Why we built this</a>
   </div>
-
   <div class="feature-pills">
     <div class="pill">🧠 Bionic Reading</div>
     <div class="pill">📏 Reading Ruler</div>
@@ -653,198 +114,76 @@ nav { padding: 14px 20px; }
   </div>
 </section>
 
-<!-- ── ORIGIN STORY ── -->
-
-<section class="origin" id="story">
-  <div class="origin-inner">
-    <div class="origin-label">Why this exists</div>
-    <div class="origin-quote">
-      "There is a particular kind of loneliness<br>
-      in not being able to read<br>
-      the way the world expects you to.<br><br>
-      <span class="hl">Not because the words are hard.<br>
-      Because the page itself feels hostile.</span>"
+<section class="story" id="story">
+  <div class="story-inner">
+    <div class="section-label">Why this exists</div>
+    <div class="story-quote">
+      "There is a particular kind of loneliness in not being able to read the way the world expects you to.<br><br>
+      <span class="hl">Not because the words are hard. Because the page itself feels hostile.</span>"
     </div>
-    <p class="origin-body">
-      I built ReadEasy on a Saturday night when my university's reading software crashed and support wasn't available. I needed to study. So I built what I needed.
-    </p>
-    <p class="origin-body">
-      I am a philosophy student. I believe that <strong>once ideas are accessible, people are accessible to ideas.</strong> That is the only thing ReadEasy is trying to do — remove the distance between a person and the words in front of them.
-    </p>
-    <p class="origin-body">
-      We are not here to tell you that something is wrong with you. We are not here to diagnose, categorise, or target anyone. We are just here. If you are finding it difficult to read — for any reason, in any language, at any hour — <strong>this is your access.</strong>
-    </p>
-    <p class="origin-body">
-      No account. No cost. No explanation required.
-    </p>
-
-```
-<div class="origin-sig">
-  <div class="sig-avatar">P</div>
-  <div class="sig-text">
-    <strong>Pratishtha Mishra</strong>
-    Philosophy student · KU Leuven, Brussels · Builder of things that should exist
-  </div>
-</div>
-```
-
+    <p class="story-body">I built ReadEasy on a Saturday night when my university's reading software crashed and support wasn't available. I needed to study. So I built what I needed.</p>
+    <p class="story-body">I am a philosophy student. I believe that <strong>once ideas are accessible, people are accessible to ideas.</strong> That is the only thing ReadEasy is trying to do — remove the distance between a person and the words in front of them.</p>
+    <p class="story-body">We are not here to tell you something is wrong with you. We are not here to diagnose, categorise, or target anyone. We are just here. If you are finding it difficult to read — for any reason, in any language, at any hour — <strong>this is your access.</strong></p>
+    <p class="story-body">No account. No cost. No explanation required.</p>
+    <div class="story-sig">
+      <div class="sig-avatar">P</div>
+      <div class="sig-text">
+        <strong>Pratishtha Mishra</strong>
+        Philosophy student · KU Leuven, Brussels · Builder of things that should exist
+      </div>
+    </div>
   </div>
 </section>
-
-<!-- ── FEATURES ── -->
 
 <section class="features" id="features">
-  <div class="section-label">What it does</div>
+  <div class="section-label" style="text-align:center">What it does</div>
   <h2 class="section-title">Tools that work with your mind</h2>
   <p class="section-sub">Not designed for a diagnosis. Designed for a person.</p>
-
   <div class="features-grid">
-    <div class="feat-card reveal">
-      <span class="feat-icon">🧠</span>
-      <div class="feat-name">Bionic Reading</div>
-      <div class="feat-desc">Bolds the first half of every word so your eyes anchor faster and your brain fills the rest automatically.</div>
-    </div>
-    <div class="feat-card reveal">
-      <span class="feat-icon">📏</span>
-      <div class="feat-name">Reading Ruler</div>
-      <div class="feat-desc">A highlight band follows your cursor so you never lose your place on the page.</div>
-    </div>
-    <div class="feat-card reveal">
-      <span class="feat-icon">🔊</span>
-      <div class="feat-name">Read Aloud</div>
-      <div class="feat-desc">Highlights each word as it's spoken. Adjustable speed. Click any single word to hear it instantly.</div>
-    </div>
-    <div class="feat-card reveal">
-      <span class="feat-icon">⚡</span>
-      <div class="feat-name">Speed Reader</div>
-      <div class="feat-desc">One word at a time, at your pace. Uses the Optimal Recognition Point so your brain processes faster with less effort.</div>
-    </div>
-    <div class="feat-card reveal">
-      <span class="feat-icon">📚</span>
-      <div class="feat-name">Tap to Define</div>
-      <div class="feat-desc">Click any word for an instant definition, phonetics, and example sentence. No switching tabs.</div>
-    </div>
-    <div class="feat-card reveal">
-      <span class="feat-icon">🔦</span>
-      <div class="feat-name">Focus Mode</div>
-      <div class="feat-desc">Dims everything except the paragraph you're reading. For when the whole page feels overwhelming.</div>
-    </div>
-    <div class="feat-card reveal">
-      <span class="feat-icon">📄</span>
-      <div class="feat-name">PDF Upload</div>
-      <div class="feat-desc">Drag and drop any PDF — a textbook, article, paper — and read it with all accessibility features active.</div>
-    </div>
-    <div class="feat-card reveal">
-      <span class="feat-icon">🎨</span>
-      <div class="feat-name">Colour Themes</div>
-      <div class="feat-desc">7 background colours including cream, blue, yellow, and dark mode — because white is not always the most readable.</div>
-    </div>
-    <div class="feat-card reveal">
-      <span class="feat-icon">🔤</span>
-      <div class="feat-name">Dyslexia Fonts</div>
-      <div class="feat-desc">Lexend, Atkinson Hyperlegible, OpenDyslexic, and Georgia — fonts designed for easier reading, not just aesthetics.</div>
-    </div>
+    <div class="feat-card"><span class="feat-icon">🧠</span><div class="feat-name">Bionic Reading</div><div class="feat-desc">Bolds the first half of every word so your eyes anchor faster and your brain fills the rest automatically.</div></div>
+    <div class="feat-card"><span class="feat-icon">📏</span><div class="feat-name">Reading Ruler</div><div class="feat-desc">A highlight band follows your cursor so you never lose your place on the page.</div></div>
+    <div class="feat-card"><span class="feat-icon">🔊</span><div class="feat-name">Read Aloud</div><div class="feat-desc">Highlights each word as it's spoken. Adjustable speed. Click any single word to hear it instantly.</div></div>
+    <div class="feat-card"><span class="feat-icon">⚡</span><div class="feat-name">Speed Reader</div><div class="feat-desc">One word at a time, at your pace. Uses the Optimal Recognition Point so your brain processes faster.</div></div>
+    <div class="feat-card"><span class="feat-icon">📚</span><div class="feat-name">Tap to Define</div><div class="feat-desc">Click any word for an instant definition, phonetics, and example sentence. No switching tabs.</div></div>
+    <div class="feat-card"><span class="feat-icon">🔦</span><div class="feat-name">Focus Mode</div><div class="feat-desc">Dims everything except the paragraph you're reading. For when the whole page feels overwhelming.</div></div>
+    <div class="feat-card"><span class="feat-icon">📄</span><div class="feat-name">PDF Upload</div><div class="feat-desc">Drag and drop any PDF and read it with all accessibility features active.</div></div>
+    <div class="feat-card"><span class="feat-icon">🎨</span><div class="feat-name">Colour Themes</div><div class="feat-desc">7 background colours including cream, blue, yellow, and dark — because white isn't always best.</div></div>
+    <div class="feat-card"><span class="feat-icon">🔤</span><div class="feat-name">Dyslexia Fonts</div><div class="feat-desc">Lexend, Atkinson Hyperlegible, OpenDyslexic, Georgia — fonts designed for easier reading.</div></div>
   </div>
 </section>
 
-<!-- ── FOR WHO ── -->
-
-<section class="forwho" id="forwho">
-  <div class="forwho-inner">
-    <div class="section-label">Our only belief</div>
-    <h2 class="section-title" style="max-width:640px;margin:0 auto 24px;">Access is not a feature.<br>It is a right.</h2>
-    <p class="section-sub" style="max-width:620px;margin:0 auto 52px;">
-      ReadEasy does not ask you to prove that you need it. It does not ask you to fit a category, hold a diagnosis, or explain yourself to anyone. The difficulty you feel when you read is real — regardless of what anyone has or hasn't told you about your brain. You are not broken. The tools were just not built for you. Until now.
-    </p>
-
-```
-<div class="forwho-grid">
-  <div class="who-card reveal">
-    <span class="who-emoji">📖</span>
-    <div class="who-title">No diagnosis needed</div>
-    <div class="who-desc">You don't need a label to use a tool that helps you.</div>
-  </div>
-  <div class="who-card reveal">
-    <span class="who-emoji">🌍</span>
-    <div class="who-title">No geography required</div>
-    <div class="who-desc">Built to work anywhere, on any device, in any language context.</div>
-  </div>
-  <div class="who-card reveal">
-    <span class="who-emoji">💸</span>
-    <div class="who-title">No cost. Ever.</div>
-    <div class="who-desc">Not a trial. Not freemium. Free — because access shouldn't depend on money.</div>
-  </div>
-  <div class="who-card reveal">
-    <span class="who-emoji">🔒</span>
-    <div class="who-title">No data collected</div>
-    <div class="who-desc">We don't know who you are. We don't need to. Just open it and read.</div>
-  </div>
-  <div class="who-card reveal">
-    <span class="who-emoji">🤝</span>
-    <div class="who-title">No agenda</div>
-    <div class="who-desc">ReadEasy is not a product. It is not a startup. It is just something that should exist.</div>
-  </div>
-  <div class="who-card reveal">
-    <span class="who-emoji">💚</span>
-    <div class="who-title">No explanation required</div>
-    <div class="who-desc">If it helps you — it's yours.</div>
-  </div>
-</div>
-```
-
+<section class="belief" id="belief">
+  <div class="belief-inner">
+    <div class="section-label" style="text-align:center">Our only belief</div>
+    <h2 class="section-title">Access is not a feature.<br>It is a right.</h2>
+    <p class="belief-body">ReadEasy does not ask you to prove that you need it. It does not ask you to fit a category, hold a diagnosis, or explain yourself to anyone. The difficulty you feel when you read is real. You are not broken. The tools were just not built for you. Until now.</p>
+    <div class="belief-grid">
+      <div class="belief-card"><span class="belief-emoji">📖</span><div class="belief-title">No diagnosis needed</div><div class="belief-desc">You don't need a label to use a tool that helps you.</div></div>
+      <div class="belief-card"><span class="belief-emoji">🌍</span><div class="belief-title">No geography required</div><div class="belief-desc">Works anywhere, on any device, in any language context.</div></div>
+      <div class="belief-card"><span class="belief-emoji">💸</span><div class="belief-title">No cost. Ever.</div><div class="belief-desc">Not a trial. Not freemium. Free — because access shouldn't depend on money.</div></div>
+      <div class="belief-card"><span class="belief-emoji">🔒</span><div class="belief-title">No data collected</div><div class="belief-desc">We don't know who you are. We don't need to. Just open it and read.</div></div>
+      <div class="belief-card"><span class="belief-emoji">🤝</span><div class="belief-title">No agenda</div><div class="belief-desc">Not a product. Not a startup. Just something that should exist.</div></div>
+      <div class="belief-card"><span class="belief-emoji">💚</span><div class="belief-title">No explanation required</div><div class="belief-desc">If it helps you — it's yours.</div></div>
+    </div>
   </div>
 </section>
-
-<!-- ── COLLABORATE ── -->
 
 <section class="collab" id="collaborate">
-  <div class="collab-inner reveal">
+  <div class="collab-inner">
     <span class="collab-icon">🌱</span>
     <h2 class="collab-title">Help it grow.</h2>
-    <p class="collab-body">
-      ReadEasy was built by one person with a philosophy and a UX vision. It works. But it could reach further — <strong>offline support, saved notes, more languages</strong> — with the right people who believe in the same thing.
-    </p>
-    <p class="collab-body" style="margin-bottom:36px;">
-      If you are a developer, an institution, or simply someone who wants to share it — <strong>that is enough.</strong>
-    </p>
-
-```
-<div class="collab-needs">
-  <div class="need-item">
-    <span class="need-icon">⚙️</span>
-    <div class="need-text">
-      <strong>Backend developer</strong>
-      Help add saved notes and offline support — privacy-first, always free.
+    <p class="collab-body">ReadEasy was built by one person with a philosophy and a UX vision. It works. But it could reach further — <strong>offline support, saved notes, more languages</strong> — with the right people who believe in the same thing.</p>
+    <div class="need-list">
+      <div class="need-item"><span class="need-icon">⚙️</span><div class="need-text"><strong>Backend developer</strong>Help add saved notes and offline support — privacy-first, always free.</div></div>
+      <div class="need-item"><span class="need-icon">🏫</span><div class="need-text"><strong>Universities & institutions</strong>Offer ReadEasy as a free accessibility resource to your students.</div></div>
+      <div class="need-item"><span class="need-icon">💬</span><div class="need-text"><strong>Anyone</strong>Share it with someone who might need it. That is the whole ask.</div></div>
     </div>
-  </div>
-  <div class="need-item">
-    <span class="need-icon">🏫</span>
-    <div class="need-text">
-      <strong>Universities & institutions</strong>
-      Offer ReadEasy as a free accessibility resource to your students.
-    </div>
-  </div>
-  <div class="need-item">
-    <span class="need-icon">💬</span>
-    <div class="need-text">
-      <strong>Anyone</strong>
-      Share it with someone who might need it. That is the whole ask.
-    </div>
-  </div>
-</div>
-
-<a href="mailto:pratishthamishra3007@gmail.com" class="contact-btn">
-  ✉️ Get in touch
-</a>
-```
-
+    <a href="mailto:pratishthamishra3007@gmail.com" class="contact-btn">✉️ Get in touch</a>
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
-
 <footer>
-  <div class="footer-logo">ReadEasy 📖</div>
+  <div class="footer-logo">📖 ReadEasy</div>
   <div class="footer-tagline">for every kind of mind · free · always</div>
   <div class="footer-links">
     <a href="readeasy-app.html">Open the Tool</a>
@@ -853,24 +192,8 @@ nav { padding: 14px 20px; }
     <a href="#collaborate">Collaborate</a>
     <a href="mailto:pratishthamishra3007@gmail.com">Contact</a>
   </div>
-  <div class="footer-bottom">
-    Built by Pratishtha Mishra · Brussels, Belgium · Not for profit · Never will be.
-  </div>
+  <div class="footer-bottom">Built by Pratishtha Mishra · Brussels, Belgium · Not for profit · Never will be.</div>
 </footer>
-
-<script>
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
 
 </body>
 </html>
