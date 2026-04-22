@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindThreads — Mental Load Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #0d1117; font-family: 'Atkinson Hyperlegible', sans-serif; color: #e6edf3; min-height: 100vh; overflow-x: hidden; }
+
+/* ── HEADER ── */
+header {
+background: rgba(13,17,23,0.95);
+backdrop-filter: blur(12px);
+padding: 16px 28px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 1px solid #21262d;
+position: sticky;
+top: 0;
+z-index: 50;
+}
+.logo { font-family: ‘Lexend’, sans-serif; font-weight: 800; font-size: 1.2rem; color: #e6edf3; display: flex; align-items: center; gap: 10px; }
+.logo-dot { width: 10px; height: 10px; background: #58a6ff; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; } }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.thread-count { font-size: 0.8rem; color: #8b949e; font-family: ‘Lexend’, sans-serif; }
+.thread-count span { color: #58a6ff; font-weight: 700; }
+
+/* ── LAYOUT ── */
+.app { display: flex; min-height: calc(100vh - 61px); }
+
+/* ── SIDEBAR ── */
+.sidebar {
+width: 260px;
+flex-shrink: 0;
+background: #161b22;
+border-right: 1px solid #21262d;
+padding: 20px 16px;
+display: flex;
+flex-direction: column;
+gap: 8px;
+height: calc(100vh - 61px);
+position: sticky;
+top: 61px;
+overflow-y: auto;
+}
+
+.sidebar-label {
+font-family: ‘Lexend’, sans-serif;
+font-size: 0.65rem;
+font-weight: 700;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: #6e7681;
+padding: 8px 8px 4px;
+}
+
+.category-btn {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 10px 12px;
+border-radius: 8px;
+border: none;
+background: transparent;
+color: #8b949e;
+font-family: ‘Atkinson Hyperlegible’, sans-serif;
+font-size: 0.88rem;
+cursor: pointer;
+width: 100%;
+text-align: left;
+transition: all 0.15s;
+}
+.category-btn:hover { background: #21262d; color: #e6edf3; }
+.category-btn.active { background: rgba(88,166,255,0.1); color: #58a6ff; border: 1px solid rgba(88,166,255,0.2); }
+.category-btn .cat-count { margin-left: auto; background: #21262d; color: #8b949e; padding: 1px 7px; border-radius: 10px; font-size: 0.72rem; font-weight: 700; }
+.category-btn.active .cat-count { background: rgba(88,166,255,0.2); color: #58a6ff; }
+
+.sidebar-divider { border: none; border-top: 1px solid #21262d; margin: 8px 0; }
+
+.energy-section { margin-top: auto; padding-top: 16px; border-top: 1px solid #21262d; }
+.energy-label { font-size: 0.75rem; color: #6e7681; font-family: ‘Lexend’, sans-serif; font-weight: 600; margin-bottom: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+.energy-bar-wrap { background: #21262d; border-radius: 6px; height: 8px; overflow: hidden; margin-bottom: 8px; }
+.energy-bar { height: 100%; border-radius: 6px; transition: width 0.5s ease; }
+.energy-text { font-size: 0.78rem; color: #8b949e; }
+.energy-text span { font-weight: 700; }
+
+/* ── MAIN ── */
+.main { flex: 1; padding: 28px; max-width: 100%; }
+
+/* ── ADD THREAD ── */
+.add-section { margin-bottom: 28px; }
+.add-box {
+background: #161b22;
+border: 1px solid #30363d;
+border-radius: 14px;
+padding: 20px 24px;
+transition: border-color 0.2s;
+}
+.add-box:focus-within { border-color: #58a6ff; }
+.add-top { display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.add-input {
+flex: 1;
+min-width: 200px;
+background: transparent;
+border: none;
+color: #e6edf3;
+font-family: ‘Atkinson Hyperlegible’, sans-serif;
+font-size: 1rem;
+outline: none;
+line-height: 1.5;
+}
+.add-input::placeholder { color: #484f58; }
+.add-bottom { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+.select-styled {
+background: #21262d;
+border: 1px solid #30363d;
+color: #e6edf3;
+padding: 7px 12px;
+border-radius: 8px;
+font-family: ‘Atkinson Hyperlegible’, sans-serif;
+font-size: 0.82rem;
+cursor: pointer;
+outline: none;
+}
+
+.weight-btns { display: flex; gap: 6px; }
+.weight-btn {
+padding: 6px 12px;
+border-radius: 6px;
+border: 1px solid #30363d;
+background: transparent;
+color: #8b949e;
+font-size: 0.78rem;
+font-weight: 700;
+cursor: pointer;
+font-family: ‘Lexend’, sans-serif;
+transition: all 0.15s;
+}
+.weight-btn:hover { border-color: #58a6ff; color: #58a6ff; }
+.weight-btn.selected { background: #58a6ff; color: #0d1117; border-color: #58a6ff; }
+.weight-btn.w-medium.selected { background: #d29922; border-color: #d29922; color: #0d1117; }
+.weight-btn.w-heavy.selected { background: #f85149; border-color: #f85149; color: #fff; }
+
+.add-btn {
+margin-left: auto;
+background: #238636;
+color: #fff;
+border: 1px solid #2ea043;
+padding: 8px 20px;
+border-radius: 8px;
+font-family: ‘Lexend’, sans-serif;
+font-weight: 700;
+font-size: 0.88rem;
+cursor: pointer;
+transition: all 0.15s;
+}
+.add-btn:hover { background: #2ea043; }
+
+/* ── THREADS ── */
+.threads-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 16px;
+flex-wrap: wrap;
+gap: 10px;
+}
+.threads-title { font-family: ‘Lexend’, sans-serif; font-weight: 700; font-size: 1.1rem; color: #e6edf3; }
+.sort-select { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 6px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; outline: none; }
+
+.threads-list { display: flex; flex-direction: column; gap: 10px; }
+
+.thread-card {
+background: #161b22;
+border: 1px solid #30363d;
+border-radius: 12px;
+padding: 18px 20px;
+display: flex;
+align-items: flex-start;
+gap: 14px;
+transition: all 0.2s;
+animation: slideIn 0.3s ease;
+}
+@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.thread-card:hover { border-color: #58a6ff; }
+.thread-card.done { opacity: 0.4; }
+.thread-card.done .thread-title { text-decoration: line-through; }
+
+.thread-check {
+width: 20px; height: 20px;
+border-radius: 50%;
+border: 2px solid #30363d;
+flex-shrink: 0;
+cursor: pointer;
+transition: all 0.15s;
+display: flex; align-items: center; justify-content: center;
+margin-top: 2px;
+background: transparent;
+}
+.thread-check:hover { border-color: #3fb950; }
+.thread-check.checked { background: #3fb950; border-color: #3fb950; }
+.thread-check.checked::after { content: ‘✓’; color: white; font-size: 0.7rem; font-weight: 700; }
+
+.thread-body { flex: 1; }
+.thread-title { font-size: 0.95rem; color: #e6edf3; font-weight: 600; margin-bottom: 6px; line-height: 1.4; }
+.thread-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.thread-cat { font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; font-family: ‘Lexend’, sans-serif; }
+.thread-weight { font-size: 0.72rem; color: #6e7681; font-weight: 600; }
+.thread-time { font-size: 0.72rem; color: #484f58; }
+
+.thread-actions { display: flex; gap: 6px; opacity: 0; transition: opacity 0.15s; }
+.thread-card:hover .thread-actions { opacity: 1; }
+.action-btn { background: transparent; border: 1px solid #30363d; color: #6e7681; padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; cursor: pointer; transition: all 0.15s; }
+.action-btn:hover { border-color: #f85149; color: #f85149; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 60px 20px; color: #6e7681; }
+.empty-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
+.empty-title { font-family: ‘Lexend’, sans-serif; font-weight: 700; font-size: 1.1rem; color: #8b949e; margin-bottom: 8px; }
+.empty-sub { font-size: 0.88rem; line-height: 1.6; }
+
+/* ── CATEGORY COLORS ── */
+.cat-work { background: rgba(88,166,255,0.15); color: #58a6ff; }
+.cat-personal { background: rgba(63,185,80,0.15); color: #3fb950; }
+.cat-family { background: rgba(210,153,34,0.15); color: #d29922; }
+.cat-health { background: rgba(248,81,73,0.15); color: #f85149; }
+.cat-creative { background: rgba(188,140,255,0.15); color: #bc8cff; }
+.cat-admin { background: rgba(139,148,158,0.15); color: #8b949e; }
+
+/* ── MOBILE ── */
+@media (max-width: 700px) {
+.app { flex-direction: column; }
+.sidebar { width: 100%; height: auto; position: static; flex-direction: row; flex-wrap: wrap; overflow-x: auto; padding: 12px; gap: 6px; }
+.sidebar-label { display: none; }
+.energy-section { display: none; }
+.sidebar-divider { display: none; }
+.main { padding: 16px; }
+.add-top { flex-direction: column; }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    MindThreads
+  </div>
+  <div class="header-right">
+    <span class="thread-count">Active threads: <span id="active-count">0</span></span>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+    <div class="sidebar-label">Categories</div>
+    <button class="category-btn active" onclick="filterCategory('all')" id="cat-all">
+      🧵 All threads <span class="cat-count" id="count-all">0</span>
+    </button>
+    <button class="category-btn" onclick="filterCategory('work')" id="cat-work">
+      💼 Work <span class="cat-count" id="count-work">0</span>
+    </button>
+    <button class="category-btn" onclick="filterCategory('personal')" id="cat-personal">
+      🌱 Personal <span class="cat-count" id="count-personal">0</span>
+    </button>
+    <button class="category-btn" onclick="filterCategory('family')" id="cat-family">
+      🏠 Family <span class="cat-count" id="count-family">0</span>
+    </button>
+    <button class="category-btn" onclick="filterCategory('health')" id="cat-health">
+      💊 Health <span class="cat-count" id="count-health">0</span>
+    </button>
+    <button class="category-btn" onclick="filterCategory('creative')" id="cat-creative">
+      ✨ Creative <span class="cat-count" id="count-creative">0</span>
+    </button>
+    <button class="category-btn" onclick="filterCategory('admin')" id="cat-admin">
+      📋 Admin <span class="cat-count" id="count-admin">0</span>
+    </button>
+
+```
+<hr class="sidebar-divider">
+<button class="category-btn" onclick="filterCategory('done')" id="cat-done">
+  ✅ Completed <span class="cat-count" id="count-done">0</span>
+</button>
+
+<div class="energy-section">
+  <div class="energy-label">Mental Load</div>
+  <div class="energy-bar-wrap">
+    <div class="energy-bar" id="energy-bar" style="width:0%;background:#3fb950"></div>
+  </div>
+  <div class="energy-text" id="energy-text">0 threads · <span>light</span></div>
+</div>
+```
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+```
+<!-- ADD -->
+<div class="add-section">
+  <div class="add-box">
+    <div class="add-top">
+      <input class="add-input" id="thread-input" placeholder="What's on your mind? Add a thread..." onkeydown="if(event.key==='Enter')addThread()">
+    </div>
+    <div class="add-bottom">
+      <select class="select-styled" id="cat-select">
+        <option value="work">💼 Work</option>
+        <option value="personal">🌱 Personal</option>
+        <option value="family">🏠 Family</option>
+        <option value="health">💊 Health</option>
+        <option value="creative">✨ Creative</option>
+        <option value="admin">📋 Admin</option>
+      </select>
+
+      <div class="weight-btns">
+        <button class="weight-btn w-light selected" onclick="selectWeight('light', this)">Light</button>
+        <button class="weight-btn w-medium" onclick="selectWeight('medium', this)">Medium</button>
+        <button class="weight-btn w-heavy" onclick="selectWeight('heavy', this)">Heavy</button>
+      </div>
+
+      <button class="add-btn" onclick="addThread()">+ Add Thread</button>
+    </div>
+  </div>
+</div>
+
+<!-- THREADS -->
+<div class="threads-header">
+  <div class="threads-title" id="threads-title">All Threads</div>
+  <select class="sort-select" onchange="sortThreads(this.value)">
+    <option value="newest">Newest first</option>
+    <option value="weight">Heaviest first</option>
+    <option value="category">By category</option>
+  </select>
+</div>
+
+<div class="threads-list" id="threads-list">
+  <div class="empty-state">
+    <span class="empty-icon">🧵</span>
+    <div class="empty-title">Your mind is clear.</div>
+    <div class="empty-sub">Add the threads you're holding onto above.<br>Every thought you track is one less thing your brain has to carry.</div>
+  </div>
+</div>
+```
+
+  </main>
+</div>
+
+<script>
+let threads = JSON.parse(localStorage.getItem('mindthreads') || '[]');
+let currentFilter = 'all';
+let currentWeight = 'light';
+let sortMode = 'newest';
+
+const catLabels = { work: '💼 Work', personal: '🌱 Personal', family: '🏠 Family', health: '💊 Health', creative: '✨ Creative', admin: '📋 Admin' };
+const weightScore = { light: 1, medium: 2, heavy: 3 };
+
+function save() { localStorage.setItem('mindthreads', JSON.stringify(threads)); }
+
+function selectWeight(w, btn) {
+  currentWeight = w;
+  document.querySelectorAll('.weight-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function addThread() {
+  const input = document.getElementById('thread-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const cat = document.getElementById('cat-select').value;
+  threads.unshift({ id: Date.now(), text, cat, weight: currentWeight, done: false, created: new Date().toISOString() });
+  input.value = '';
+  save();
+  render();
+}
+
+function toggleDone(id) {
+  const t = threads.find(t => t.id === id);
+  if (t) { t.done = !t.done; save(); render(); }
+}
+
+function deleteThread(id) {
+  threads = threads.filter(t => t.id !== id);
+  save(); render();
+}
+
+function filterCategory(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('cat-' + cat)?.classList.add('active');
+  render();
+}
+
+function sortThreads(mode) { sortMode = mode; render(); }
+
+function timeAgo(iso) {
+  const diff = Date.now() - new Date(iso);
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h / 24) + 'd ago';
+}
+
+function updateCounts() {
+  const active = threads.filter(t => !t.done);
+  document.getElementById('active-count').textContent = active.length;
+  document.getElementById('count-all').textContent = active.length;
+  document.getElementById('count-done').textContent = threads.filter(t => t.done).length;
+  ['work','personal','family','health','creative','admin'].forEach(cat => {
+    document.getElementById('count-' + cat).textContent = active.filter(t => t.cat === cat).length;
+  });
+
+  // Energy bar
+  const score = active.reduce((s, t) => s + weightScore[t.weight], 0);
+  const max = Math.max(score, 1);
+  const pct = Math.min((score / 20) * 100, 100);
+  const bar = document.getElementById('energy-bar');
+  bar.style.width = pct + '%';
+  bar.style.background = pct < 33 ? '#3fb950' : pct < 66 ? '#d29922' : '#f85149';
+  const label = pct < 33 ? 'light' : pct < 66 ? 'moderate' : 'heavy';
+  document.getElementById('energy-text').innerHTML = `${active.length} threads · <span>${label}</span>`;
+}
+
+function render() {
+  updateCounts();
+  const list = document.getElementById('threads-list');
+  let filtered = currentFilter === 'done'
+    ? threads.filter(t => t.done)
+    : currentFilter === 'all'
+    ? threads.filter(t => !t.done)
+    : threads.filter(t => t.cat === currentFilter && !t.done);
+
+  const titles = { all: 'All Threads', done: 'Completed', work: '💼 Work', personal: '🌱 Personal', family: '🏠 Family', health: '💊 Health', creative: '✨ Creative', admin: '📋 Admin' };
+  document.getElementById('threads-title').textContent = titles[currentFilter] || 'Threads';
+
+  if (sortMode === 'weight') filtered.sort((a,b) => weightScore[b.weight] - weightScore[a.weight]);
+  else if (sortMode === 'category') filtered.sort((a,b) => a.cat.localeCompare(b.cat));
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><span class="empty-icon">${currentFilter === 'done' ? '🎉' : '🧵'}</span><div class="empty-title">${currentFilter === 'done' ? 'Nothing completed yet.' : 'Nothing here.'}</div><div class="empty-sub">${currentFilter === 'done' ? 'Complete threads to see them here.' : 'Add a thread above.'}</div></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(t => `
+    <div class="thread-card ${t.done ? 'done' : ''}">
+      <button class="thread-check ${t.done ? 'checked' : ''}" onclick="toggleDone(${t.id})"></button>
+      <div class="thread-body">
+        <div class="thread-title">${t.text}</div>
+        <div class="thread-meta">
+          <span class="thread-cat cat-${t.cat}">${catLabels[t.cat]}</span>
+          <span class="thread-weight">${t.weight === 'light' ? '⚡ Light' : t.weight === 'medium' ? '⚖️ Medium' : '🔥 Heavy'}</span>
+          <span class="thread-time">${timeAgo(t.created)}</span>
+        </div>
+      </div>
+      <div class="thread-actions">
+        <button class="action-btn" onclick="deleteThread(${t.id})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+render();
+</script>
+
+</body>
+</html>
